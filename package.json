@@ -9,7 +9,9 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "preview": "vite preview"
+    "preview": "vite preview --base=/todo-app/",
+    "encode:env": "base64 .env > .env.encoded",
+    "decode:env": "base64 -d .env.encoded > .env.decoded"
   },
   "dependencies": {
     "react": "^18.3.1",

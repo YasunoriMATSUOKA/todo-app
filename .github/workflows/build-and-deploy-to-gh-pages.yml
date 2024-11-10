@@ -32,6 +32,11 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm run format:check
+      - name: Restore .env file
+        env:
+          VITE_ENV: ${{ secrets.VITE_ENV }}
+        shell: bash
+        run: echo $VITE_ENV | base64 --decode --ignore-garbage > .env
       - run: npm run build
 
       - name: Deploy
