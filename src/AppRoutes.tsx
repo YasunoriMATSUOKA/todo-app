@@ -4,8 +4,6 @@ import TodosPageComponent from "@/components/pages/todos/TodosPage";
 import React from "react";
 
 const AppRoutes: React.FC = () => {
-  console.log(import.meta.env.VITE_BASE);
-
   return (
     <BrowserRouter
       basename="/todo-app"
