@@ -8,7 +8,7 @@ const AppRoutes: React.FC = () => {
 
   return (
     <BrowserRouter
-      basename={import.meta.env.VITE_BASE}
+      basename="/todo-app"
       future={{
         v7_relativeSplatPath: true,
         v7_startTransition: true,
