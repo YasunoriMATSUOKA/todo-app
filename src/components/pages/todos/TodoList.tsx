@@ -1,6 +1,6 @@
+import TodoListItemComponent from "@/components/pages/todos/TodoListItem";
 import { Todo, TodoUpdate } from "@/lib/feature/todo/todo.types";
 import React from "react";
-import TodoListItemComponent from "@/components/pages/todos/TodoListItem";
 
 interface TodoListProps {
   todos: Todo[];

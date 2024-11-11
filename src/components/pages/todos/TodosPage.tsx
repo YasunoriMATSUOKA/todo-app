@@ -1,7 +1,7 @@
-import React from "react";
+import CreateNewTodoButtonComponent from "@/components/pages/todos/CreateNewTodoButton";
 import TodoListComponent from "@/components/pages/todos/TodoList";
 import useTodo from "@/lib/feature/todo/todo.hooks";
-import CreateNewTodoButtonComponent from "@/components/pages/todos/CreateNewTodoButton";
+import React from "react";
 
 const TodosPageComponent: React.FC = () => {
   const { todos, createTodo, updateTodo, deleteTodo } = useTodo();

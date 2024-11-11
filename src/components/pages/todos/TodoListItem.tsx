@@ -1,9 +1,9 @@
-import React from "react";
-import { Todo, TodoUpdate } from "@/lib/feature/todo/todo.types";
+import DeleteTodoButtonComponent from "@/components/pages/todos/DeleteTodoButton";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import { Todo, TodoUpdate } from "@/lib/feature/todo/todo.types";
 import { cn } from "@/lib/utils";
-import DeleteTodoButtonComponent from "@/components/pages/todos/DeleteTodoButton";
+import React from "react";
 
 interface TodoListItemProps {
   todo: Todo;
