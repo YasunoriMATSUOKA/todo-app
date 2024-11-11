@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Todo, TodoCreate, TodoUpdate } from "./todo.types";
+import { Todo, TodoCreate, TodoUpdate } from "@/lib/feature/todo/todo.types";
 
 const useTodo = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
