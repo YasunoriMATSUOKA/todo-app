@@ -4,16 +4,19 @@ import TodosPageComponent from "@/components/pages/todos/TodosPage";
 import React from "react";
 
 const AppRoutes: React.FC = () => {
+  console.log(import.meta.env.VITE_BASE);
+
   return (
     <BrowserRouter
+      basename={import.meta.env.VITE_BASE}
       future={{
         v7_relativeSplatPath: true,
         v7_startTransition: true,
       }}
     >
       <Routes>
-        <Route path="" element={<HomePageComponent />} />
-        <Route path="todos" element={<TodosPageComponent />} />
+        <Route path="/" element={<HomePageComponent />} />
+        <Route path="/todos" element={<TodosPageComponent />} />
       </Routes>
     </BrowserRouter>
   );
