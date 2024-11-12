@@ -38,6 +38,9 @@ jobs:
         shell: bash
         run: echo $VITE_ENV | base64 --decode --ignore-garbage > .env
       - run: npm run build
+      - run: npm run chromatic
+        env:
+          CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
 
       - name: Deploy
         if: (github.event_name == 'release' || (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch') && success()
