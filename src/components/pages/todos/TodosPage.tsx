@@ -4,7 +4,7 @@ import useTodo from "@/lib/feature/todo/todo.hooks";
 import React from "react";
 
 const TodosPageComponent: React.FC = () => {
-  const { todos, createTodo, updateTodo, deleteTodo } = useTodo();
+  const { isLoading, todos, create, update, remove } = useTodo();
 
   return (
     <>
@@ -13,13 +13,14 @@ const TodosPageComponent: React.FC = () => {
       </div>
       <div className="m-3">
         <TodoListComponent
+          isLoading={isLoading}
           todos={todos}
-          updateTodo={updateTodo}
-          deleteTodo={deleteTodo}
+          updateTodo={update}
+          deleteTodo={remove}
         />
       </div>
       <div className="m-3">
-        <CreateNewTodoButtonComponent createTodo={createTodo} />
+        <CreateNewTodoButtonComponent createTodo={create} />
       </div>
     </>
   );

@@ -3,16 +3,21 @@ import { Todo, TodoUpdate } from "@/lib/feature/todo/todo.types";
 import React from "react";
 
 interface TodoListProps {
+  isLoading: boolean;
   todos: Todo[];
-  updateTodo: (todoUpdate: TodoUpdate) => void;
-  deleteTodo: (id: string) => void;
+  updateTodo: (todoUpdate: TodoUpdate) => Promise<Todo>;
+  deleteTodo: (id: string) => Promise<void>;
 }
 
 const TodoListComponent: React.FC<TodoListProps> = ({
+  isLoading,
   todos,
   updateTodo,
   deleteTodo,
 }: TodoListProps) => {
+  if (isLoading) {
+    return null;
+  }
   return (
     <>
       {todos.map((todo) => (

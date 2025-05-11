@@ -7,8 +7,8 @@ import React from "react";
 
 interface TodoListItemProps {
   todo: Todo;
-  updateTodo: (todoUpdate: TodoUpdate) => void;
-  deleteTodo: (id: string) => void;
+  updateTodo: (todoUpdate: TodoUpdate) => Promise<Todo>;
+  deleteTodo: (id: string) => Promise<void>;
 }
 
 const TodoListItemComponent: React.FC<TodoListItemProps> = ({
@@ -29,6 +29,8 @@ const TodoListItemComponent: React.FC<TodoListItemProps> = ({
             id: todo.id,
             text: todo.text,
             done: checked as boolean,
+          }).then(() => {
+            console.log("Todo Updated");
           });
         }}
       />
@@ -40,6 +42,8 @@ const TodoListItemComponent: React.FC<TodoListItemProps> = ({
             id: todo.id,
             text: e.target.value,
             done: todo.done,
+          }).then(() => {
+            console.log("Todo Updated");
           });
         }}
       />
