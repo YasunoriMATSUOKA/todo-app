@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { TodoCreate } from "@/lib/feature/todo/todo.types";
+import { Todo, TodoCreate } from "@/lib/feature/todo/todo.types";
 import React from "react";
 
 interface CreateNewTodoButtonProps {
-  createTodo: (todoCreate: TodoCreate) => void;
+  createTodo: (todoCreate: TodoCreate) => Promise<Todo>;
 }
 
 const CreateNewTodoButtonComponent: React.FC<CreateNewTodoButtonProps> = ({
@@ -15,6 +15,8 @@ const CreateNewTodoButtonComponent: React.FC<CreateNewTodoButtonProps> = ({
       onClick={() => {
         createTodo({
           text: "New Todo",
+        }).then(() => {
+          console.log("Todo Created");
         });
       }}
     >

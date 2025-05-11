@@ -4,7 +4,7 @@ import React from "react";
 
 interface DeleteTodoButtonProps {
   todo: Todo;
-  deleteTodo: (id: string) => void;
+  deleteTodo: (id: string) => Promise<void>;
 }
 
 const DeleteTodoButtonComponent: React.FC<DeleteTodoButtonProps> = ({
@@ -15,7 +15,9 @@ const DeleteTodoButtonComponent: React.FC<DeleteTodoButtonProps> = ({
     <Button
       variant="outline"
       onClick={() => {
-        deleteTodo(todo.id);
+        deleteTodo(todo.id).then(() => {
+          console.log("Todo Deleted");
+        });
       }}
     >
       X Delete
