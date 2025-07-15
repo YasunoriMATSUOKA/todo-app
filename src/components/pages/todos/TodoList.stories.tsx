@@ -97,6 +97,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Example: Story = {
   args: {
+    isLoading: false,
     todos: [
       {
         id: "1",
@@ -134,6 +135,7 @@ export const Example: Story = {
 
 export const NotEmpty: Story = {
   args: {
+    isLoading: false,
     todos: [
       {
         id: "1",
@@ -171,6 +173,7 @@ export const NotEmpty: Story = {
 
 export const Empty: Story = {
   args: {
+    isLoading: false,
     todos: [],
     updateTodo: fn(),
     deleteTodo: fn(),
