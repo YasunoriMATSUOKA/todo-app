@@ -42,12 +42,10 @@ This is a React + TypeScript todo application using Vite as the build tool. The 
 ### Key Architectural Decisions
 
 1. **Feature-Based Architecture**: Code is organized by features under `src/lib/feature/`
-
    - Each feature (e.g., `todo`) contains its own types, services, hooks, and infrastructure
    - Business logic is separated from UI components
 
 2. **Clean Architecture Layers**:
-
    - **Types** (`todo.types.ts`): Domain entities and interfaces
    - **Service** (`todo.service.ts`): Business logic and use cases
    - **Infrastructure** (`todo.infrastructure.service.ts`): Data persistence layer
@@ -55,13 +53,11 @@ This is a React + TypeScript todo application using Vite as the build tool. The 
    - **Components**: UI components consume hooks, not services directly
 
 3. **UI Component System**:
-
    - Uses shadcn/ui components (Radix UI based) in `src/components/ui/`
    - Tailwind CSS for styling with custom theme configuration
    - Components are developed in isolation using Storybook
 
 4. **Routing Structure**:
-
    - React Router v6 with routes defined in `src/AppRoutes.tsx`
    - Base path `/todo-app/` configured for GitHub Pages deployment
    - Pages are in `src/pages/` directory
