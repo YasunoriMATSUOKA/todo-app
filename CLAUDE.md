@@ -5,6 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Essential Commands
 
 ### Development
+
 ```bash
 npm run dev        # Start Vite dev server at http://localhost:5173
 npm run build      # TypeScript check + production build
@@ -12,6 +13,7 @@ npm run preview    # Preview production build
 ```
 
 ### Code Quality
+
 ```bash
 npm run lint       # Run ESLint
 npm run format     # Format code with Prettier
@@ -19,6 +21,7 @@ npm run format:check  # Check formatting without fixing
 ```
 
 ### Component Development
+
 ```bash
 npm run storybook  # Start Storybook dev server
 npm run build-storybook  # Build static Storybook
@@ -26,6 +29,7 @@ npm run chromatic  # Run visual regression tests
 ```
 
 ### Environment Variables
+
 ```bash
 npm run encode:env  # Encode .env file to base64
 npm run decode:env  # Decode base64 to .env file
@@ -38,10 +42,12 @@ This is a React + TypeScript todo application using Vite as the build tool. The 
 ### Key Architectural Decisions
 
 1. **Feature-Based Architecture**: Code is organized by features under `src/lib/feature/`
+
    - Each feature (e.g., `todo`) contains its own types, services, hooks, and infrastructure
    - Business logic is separated from UI components
 
 2. **Clean Architecture Layers**:
+
    - **Types** (`todo.types.ts`): Domain entities and interfaces
    - **Service** (`todo.service.ts`): Business logic and use cases
    - **Infrastructure** (`todo.infrastructure.service.ts`): Data persistence layer
@@ -49,11 +55,13 @@ This is a React + TypeScript todo application using Vite as the build tool. The 
    - **Components**: UI components consume hooks, not services directly
 
 3. **UI Component System**:
+
    - Uses shadcn/ui components (Radix UI based) in `src/components/ui/`
    - Tailwind CSS for styling with custom theme configuration
    - Components are developed in isolation using Storybook
 
 4. **Routing Structure**:
+
    - React Router v6 with routes defined in `src/AppRoutes.tsx`
    - Base path `/todo-app/` configured for GitHub Pages deployment
    - Pages are in `src/pages/` directory
