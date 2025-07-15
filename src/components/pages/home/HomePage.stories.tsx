@@ -28,7 +28,7 @@ export const Example: Story = {
     await expect(createNewTodoButton).toBeInTheDocument();
 
     await userEvent.click(createNewTodoButton);
-    
+
     // Wait for the new todo to appear
     const checkbox1 = await canvas.findByRole("checkbox", { checked: false });
     const input1 = canvas.getByRole("textbox", { name: "" });
