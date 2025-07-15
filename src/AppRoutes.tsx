@@ -5,13 +5,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 const AppRoutes: React.FC = () => {
   return (
-    <BrowserRouter
-      basename="/todo-app"
-      future={{
-        v7_relativeSplatPath: true,
-        v7_startTransition: true,
-      }}
-    >
+    <BrowserRouter basename="/todo-app">
       <Routes>
         <Route path="/" element={<HomePageComponent />} />
         <Route path="/todos" element={<TodosPageComponent />} />
