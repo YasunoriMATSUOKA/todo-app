@@ -12,53 +12,82 @@ const useTodo = () => {
   const [shouldBeRefreshed, setShouldBeRefreshed] = useState(true);
   const [error] = useState<Error | null | undefined>(null);
 
-  const get = useCallback(
-    async (id: string) => {
-      return await todoService.get(id);
+  const withLoading = useCallback(
+    async <T>(operation: () => Promise<T>): Promise<T> => {
+      setIsLoading(true);
+      try {
+        return await operation();
+      } finally {
+        setIsLoading(false);
+      }
     },
-    [todoService],
+    [setIsLoading],
   );
-  const list = useCallback(async () => {
-    return await todoService.list();
-  }, [todoService]);
-  const create = async (todoCreate: TodoCreate) => {
-    const todo = await todoService.create(todoCreate);
-    setShouldBeRefreshed(true);
-    return todo;
-  };
-  const update = async (todoUpdate: TodoUpdate) => {
-    const todo = await todoService.update(todoUpdate);
-    setShouldBeRefreshed(true);
-    return todo;
-  };
-  const remove = async (id: string) => {
-    await todoService.delete(id);
-    setShouldBeRefreshed(true);
-  };
-  const search = async (searchKey: keyof Todo, searchValue: unknown) => {
-    return await todoService.search(searchKey, searchValue);
-  };
+
+  const get = useCallback(
+    async (id: string): Promise<Todo> =>
+      withLoading(async () => todoService.get(id)),
+    [todoService, withLoading],
+  );
+  const list = useCallback(
+    async (): Promise<Todo[]> => withLoading(async () => todoService.list()),
+    [todoService, withLoading],
+  );
+  const create = useCallback(
+    async (todoCreate: TodoCreate): Promise<Todo> =>
+      withLoading(async () => {
+        const todo = await todoService.create(todoCreate);
+        setShouldBeRefreshed(true);
+        return todo;
+      }),
+    [todoService, withLoading, setShouldBeRefreshed],
+  );
+  const update = useCallback(
+    async (todoUpdate: TodoUpdate): Promise<Todo> =>
+      withLoading(async () => {
+        const todo = await todoService.update(todoUpdate);
+        setShouldBeRefreshed(true);
+        return todo;
+      }),
+    [todoService, withLoading, setShouldBeRefreshed],
+  );
+  const remove = useCallback(
+    async (id: string): Promise<void> =>
+      withLoading(async () => {
+        await todoService.delete(id);
+        setShouldBeRefreshed(true);
+      }),
+    [todoService, withLoading, setShouldBeRefreshed],
+  );
+  const search = useCallback(
+    async (searchKey: keyof Todo, searchValue: unknown): Promise<Todo[]> =>
+      withLoading(async () => todoService.search(searchKey, searchValue)),
+    [todoService, withLoading],
+  );
 
   useEffect(() => {
     if (!shouldBeRefreshed) {
       return;
     }
-    setIsLoading(true);
     list()
       .then((todos) => {
         setTodos(todos);
       })
       .finally(() => {
-        setIsLoading(false);
         setShouldBeRefreshed(false);
       });
   }, [shouldBeRefreshed, list, setTodos]);
 
   useEffect(() => {
     if (id) {
-      get(id).then((selectedTodo) => {
-        setTodo(selectedTodo);
-      });
+      get(id)
+        .then((selectedTodo) => {
+          setTodo(selectedTodo);
+        })
+        .catch(() => {
+          // Error handling: Just ignore the error for now
+          setTodo(null);
+        });
     }
   }, [id, get, setTodo]);
 

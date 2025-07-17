@@ -14,6 +14,7 @@
     "encode:env": "base64 .env > .env.encoded",
     "decode:env": "base64 -d .env.encoded > .env.decoded",
     "test": "vitest run --reporter=verbose",
+    "test:watch": "vitest",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "chromatic": "npx chromatic"
