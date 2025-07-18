@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import { expect, userEvent, within } from "storybook/test";
+import { expect, userEvent, waitFor, within } from "storybook/test";
 import HomePageComponent from "./HomePage";
 
 const meta = {
@@ -36,20 +36,45 @@ export const Example: Story = {
     await expect(checkbox1).toBeInTheDocument();
     await expect(input1).toBeInTheDocument();
     await expect(input1).toHaveValue("New Todo");
-    await expect(input1).not.toHaveClass("line-through");
+    await waitFor(
+      () => {
+        expect(input1).not.toHaveClass("line-through");
+      },
+      { timeout: 5000 },
+    );
     await expect(deleteButton1).toBeInTheDocument();
 
     await userEvent.click(checkbox1);
-    await expect(input1).toHaveClass("line-through");
+    await waitFor(
+      () => {
+        expect(input1).toHaveClass("line-through");
+      },
+      { timeout: 5000 },
+    );
 
     await userEvent.click(checkbox1);
-    await expect(input1).not.toHaveClass("line-through");
+    await waitFor(
+      () => {
+        expect(input1).not.toHaveClass("line-through");
+      },
+      { timeout: 5000 },
+    );
 
     await userEvent.click(checkbox1);
-    await expect(input1).toHaveClass("line-through");
+    await waitFor(
+      () => {
+        expect(input1).toHaveClass("line-through");
+      },
+      { timeout: 5000 },
+    );
 
     await userEvent.click(deleteButton1);
-    await expect(checkbox1).not.toBeInTheDocument();
+    await waitFor(
+      () => {
+        expect(checkbox1).not.toBeInTheDocument();
+      },
+      { timeout: 5000 },
+    );
     await expect(input1).not.toBeInTheDocument();
     await expect(deleteButton1).not.toBeInTheDocument();
 
