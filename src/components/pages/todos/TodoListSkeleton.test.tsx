@@ -39,6 +39,7 @@ describe("TodoListSkeleton", () => {
     expect(deleteButtons).toHaveLength(2);
     deleteButtons.forEach((button) => {
       expect(button).toBeDisabled();
+      expect(button).toHaveTextContent("Delete");
     });
   });
 });

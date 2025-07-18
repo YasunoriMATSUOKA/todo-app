@@ -21,7 +21,8 @@ const TodoListItemSkeleton: React.FC = () => {
       <DeleteTodoButtonComponent
         todo={dummyTodo}
         deleteTodo={noop}
-        isLoading={true}
+        isLoading={false}
+        isDisabled={true}
       />
     </div>
   );

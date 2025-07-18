@@ -29,7 +29,8 @@ describe("TodoListItemComponent", () => {
           todo={mockTodo}
           updateTodo={mockUpdateTodo}
           deleteTodo={mockDeleteTodo}
-          isLoading={false}
+          isUpdating={false}
+          isDeleting={false}
         />,
       );
 
@@ -44,7 +45,8 @@ describe("TodoListItemComponent", () => {
           todo={mockTodo}
           updateTodo={mockUpdateTodo}
           deleteTodo={mockDeleteTodo}
-          isLoading={false}
+          isUpdating={false}
+          isDeleting={false}
         />,
       );
 
@@ -62,7 +64,8 @@ describe("TodoListItemComponent", () => {
           todo={mockTodo}
           updateTodo={mockUpdateTodo}
           deleteTodo={mockDeleteTodo}
-          isLoading={false}
+          isUpdating={false}
+          isDeleting={false}
         />,
       );
 
@@ -86,7 +89,8 @@ describe("TodoListItemComponent", () => {
           todo={mockTodo}
           updateTodo={mockUpdateTodo}
           deleteTodo={mockDeleteTodo}
-          isLoading={false}
+          isUpdating={false}
+          isDeleting={false}
         />,
       );
 
@@ -101,7 +105,8 @@ describe("TodoListItemComponent", () => {
           todo={mockTodo}
           updateTodo={mockUpdateTodo}
           deleteTodo={mockDeleteTodo}
-          isLoading={false}
+          isUpdating={false}
+          isDeleting={false}
         />,
       );
 
@@ -121,7 +126,8 @@ describe("TodoListItemComponent", () => {
           todo={mockTodo}
           updateTodo={mockUpdateTodo}
           deleteTodo={mockDeleteTodo}
-          isLoading={false}
+          isUpdating={false}
+          isDeleting={false}
         />,
       );
 
@@ -143,7 +149,8 @@ describe("TodoListItemComponent", () => {
           todo={mockTodo}
           updateTodo={mockUpdateTodo}
           deleteTodo={mockDeleteTodo}
-          isLoading={false}
+          isUpdating={false}
+          isDeleting={false}
         />,
       );
 
@@ -163,7 +170,8 @@ describe("TodoListItemComponent", () => {
           todo={mockTodo}
           updateTodo={mockUpdateTodo}
           deleteTodo={mockDeleteTodo}
-          isLoading={false}
+          isUpdating={false}
+          isDeleting={false}
         />,
       );
 
@@ -185,7 +193,8 @@ describe("TodoListItemComponent", () => {
           todo={mockTodo}
           updateTodo={mockUpdateTodo}
           deleteTodo={mockDeleteTodo}
-          isLoading={false}
+          isUpdating={false}
+          isDeleting={false}
         />,
       );
 
@@ -198,6 +207,42 @@ describe("TodoListItemComponent", () => {
       await user.keyboard("{Escape}");
 
       expect(input.value).toBe(mockTodo.text);
+    });
+
+    it("should disable checkbox and input when isUpdating is true", () => {
+      render(
+        <TodoListItemComponent
+          todo={mockTodo}
+          updateTodo={mockUpdateTodo}
+          deleteTodo={mockDeleteTodo}
+          isUpdating={true}
+          isDeleting={false}
+        />,
+      );
+
+      const checkbox = screen.getByRole("checkbox");
+      const input = screen.getByDisplayValue(mockTodo.text);
+
+      expect(checkbox).toBeDisabled();
+      expect(input).toBeDisabled();
+    });
+
+    it("should enable checkbox and input when isUpdating is false", () => {
+      render(
+        <TodoListItemComponent
+          todo={mockTodo}
+          updateTodo={mockUpdateTodo}
+          deleteTodo={mockDeleteTodo}
+          isUpdating={false}
+          isDeleting={false}
+        />,
+      );
+
+      const checkbox = screen.getByRole("checkbox");
+      const input = screen.getByDisplayValue(mockTodo.text);
+
+      expect(checkbox).not.toBeDisabled();
+      expect(input).not.toBeDisabled();
     });
   });
 });

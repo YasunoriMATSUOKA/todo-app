@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import { expect, userEvent, within } from "storybook/test";
+import { expect, userEvent, waitFor, within } from "storybook/test";
 import TodosPageComponent from "./TodosPage";
 
 const meta = {
@@ -22,35 +22,59 @@ export const Example: Story = {
 
     const h2 = canvas.getByRole("heading", { name: "Todos" });
     const createNewTodoButton = canvas.getByRole("button", {
-      name: "+ Create New Todo",
+      name: "Create New Todo",
     });
     await expect(h2).toBeInTheDocument();
     await expect(createNewTodoButton).toBeInTheDocument();
 
     await userEvent.click(createNewTodoButton);
-    const checkbox1 = canvas.getByRole("checkbox", { checked: false });
+    const checkbox1 = await canvas.findByRole("checkbox", { checked: false });
     const input1 = canvas.getByRole("textbox", { name: "" });
-    const deleteButton1 = canvas.getByRole("button", { name: "X Delete" });
+    const deleteButton1 = canvas.getByRole("button", { name: "Delete" });
     await expect(checkbox1).toBeInTheDocument();
     await expect(input1).toBeInTheDocument();
     await expect(input1).toHaveValue("New Todo");
-    await expect(input1).not.toHaveClass("line-through");
+    await waitFor(
+      () => {
+        expect(input1).not.toHaveClass("line-through");
+      },
+      { timeout: 5000 },
+    );
     await expect(deleteButton1).toBeInTheDocument();
 
     await userEvent.click(checkbox1);
-    await expect(input1).toHaveClass("line-through");
+    await waitFor(
+      () => {
+        expect(input1).toHaveClass("line-through");
+      },
+      { timeout: 5000 },
+    );
 
     await userEvent.click(checkbox1);
-    await expect(input1).not.toHaveClass("line-through");
+    await waitFor(
+      () => {
+        expect(input1).not.toHaveClass("line-through");
+      },
+      { timeout: 5000 },
+    );
 
     await userEvent.click(checkbox1);
-    await expect(input1).toHaveClass("line-through");
+    await waitFor(
+      () => {
+        expect(input1).toHaveClass("line-through");
+      },
+      { timeout: 5000 },
+    );
 
     await userEvent.click(deleteButton1);
-    await expect(checkbox1).not.toBeInTheDocument();
+    await waitFor(
+      () => {
+        expect(checkbox1).not.toBeInTheDocument();
+      },
+      { timeout: 5000 },
+    );
     await expect(input1).not.toBeInTheDocument();
     await expect(deleteButton1).not.toBeInTheDocument();
-
     await userEvent.click(createNewTodoButton);
   },
 };

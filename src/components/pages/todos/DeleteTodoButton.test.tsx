@@ -24,7 +24,7 @@ describe("DeleteTodoButtonComponent", () => {
 
     const button = screen.getByRole("button", { name: /delete/i });
     expect(button).toBeInTheDocument();
-    expect(button).toHaveTextContent("X Delete");
+    expect(button).toHaveTextContent("Delete");
   });
 
   it("should call deleteTodo when clicked", async () => {
@@ -120,7 +120,7 @@ describe("DeleteTodoButtonComponent", () => {
       />,
     );
 
-    const button = screen.getByRole("button", { name: /delete/i });
+    const button = screen.getByRole("button", { name: /deleting/i });
     expect(button).toBeDisabled();
   });
 
@@ -134,7 +134,7 @@ describe("DeleteTodoButtonComponent", () => {
       />,
     );
 
-    const button = screen.getByRole("button", { name: /delete/i });
+    const button = screen.getByRole("button", { name: /deleting/i });
     fireEvent.click(button);
 
     expect(mockDeleteTodo).not.toHaveBeenCalled();

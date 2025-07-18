@@ -14,7 +14,7 @@ describe("CreateNewTodoButtonComponent", () => {
 
     const button = screen.getByRole("button", { name: /create new todo/i });
     expect(button).toBeInTheDocument();
-    expect(button).toHaveTextContent("+ Create New Todo");
+    expect(button).toHaveTextContent("Create New Todo");
   });
 
   it("should have full width styling", () => {
@@ -116,8 +116,21 @@ describe("CreateNewTodoButtonComponent", () => {
       />,
     );
 
-    const button = screen.getByRole("button", { name: /create new todo/i });
+    const button = screen.getByRole("button", { name: /creating new todo/i });
     expect(button).toBeDisabled();
+  });
+
+  it("should show loading text when isLoading is true", () => {
+    const mockCreateTodo = vi.fn();
+    render(
+      <CreateNewTodoButtonComponent
+        createTodo={mockCreateTodo}
+        isLoading={true}
+      />,
+    );
+
+    const button = screen.getByRole("button", { name: /creating new todo/i });
+    expect(button).toHaveTextContent("Creating New Todo...");
   });
 
   it("should not call createTodo when disabled and clicked", () => {
@@ -129,7 +142,7 @@ describe("CreateNewTodoButtonComponent", () => {
       />,
     );
 
-    const button = screen.getByRole("button", { name: /create new todo/i });
+    const button = screen.getByRole("button", { name: /creating new todo/i });
     fireEvent.click(button);
 
     expect(mockCreateTodo).not.toHaveBeenCalled();

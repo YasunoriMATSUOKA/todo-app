@@ -32,10 +32,17 @@ const meta = {
       description: "The function to delete the todo",
       defaultValue: fn(),
     },
-    isLoading: {
-      name: "isLoading",
+    isUpdating: {
+      name: "isUpdating",
       description:
-        "Whether the buttons should be disabled due to loading state",
+        "Whether the update button should be disabled due to loading state",
+      control: "boolean",
+      defaultValue: false,
+    },
+    isDeleting: {
+      name: "isDeleting",
+      description:
+        "Whether the delete button should be disabled due to loading state",
       control: "boolean",
       defaultValue: false,
     },
@@ -49,7 +56,8 @@ const meta = {
       updatedAt: new Date(),
     },
     deleteTodo: fn(),
-    isLoading: false,
+    isUpdating: false,
+    isDeleting: false,
   },
 } satisfies Meta<typeof TodoListItemComponent>;
 
@@ -67,7 +75,8 @@ export const Example: Story = {
     },
     updateTodo: fn(),
     deleteTodo: fn(),
-    isLoading: false,
+    isUpdating: false,
+    isDeleting: false,
   },
 };
 
@@ -82,7 +91,8 @@ export const NotDone: Story = {
     },
     updateTodo: fn(),
     deleteTodo: fn(),
-    isLoading: false,
+    isUpdating: false,
+    isDeleting: false,
   },
 };
 
@@ -97,7 +107,8 @@ export const Done: Story = {
     },
     updateTodo: fn(),
     deleteTodo: fn(),
-    isLoading: false,
+    isUpdating: false,
+    isDeleting: false,
   },
 };
 
@@ -112,7 +123,8 @@ export const EditingText: Story = {
     },
     updateTodo: fn(),
     deleteTodo: fn(),
-    isLoading: false,
+    isUpdating: false,
+    isDeleting: false,
   },
 };
 
@@ -127,7 +139,8 @@ export const WithLongText: Story = {
     },
     updateTodo: fn(),
     deleteTodo: fn(),
-    isLoading: false,
+    isUpdating: false,
+    isDeleting: false,
   },
 };
 
@@ -142,6 +155,7 @@ export const Loading: Story = {
     },
     updateTodo: fn(),
     deleteTodo: fn(),
-    isLoading: true,
+    isUpdating: true,
+    isDeleting: true,
   },
 };

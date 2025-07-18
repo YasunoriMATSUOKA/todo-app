@@ -31,6 +31,8 @@ describe("TodoList", () => {
         todos={mockTodos}
         updateTodo={mockUpdateTodo}
         deleteTodo={mockDeleteTodo}
+        updatingIds={new Set()}
+        deletingIds={new Set()}
       />,
     );
 
@@ -49,6 +51,8 @@ describe("TodoList", () => {
         todos={mockTodos}
         updateTodo={mockUpdateTodo}
         deleteTodo={mockDeleteTodo}
+        updatingIds={new Set()}
+        deletingIds={new Set()}
       />,
     );
 
@@ -69,6 +73,8 @@ describe("TodoList", () => {
         todos={[]}
         updateTodo={mockUpdateTodo}
         deleteTodo={mockDeleteTodo}
+        updatingIds={new Set()}
+        deletingIds={new Set()}
       />,
     );
 

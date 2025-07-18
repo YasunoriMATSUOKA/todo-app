@@ -89,6 +89,8 @@ const meta = {
     ],
     updateTodo: fn(),
     deleteTodo: fn(),
+    updatingIds: new Set<string>(),
+    deletingIds: new Set<string>(),
   },
 } satisfies Meta<typeof TodoListComponent>;
 
@@ -130,6 +132,8 @@ export const Example: Story = {
     ],
     updateTodo: fn(),
     deleteTodo: fn(),
+    updatingIds: new Set<string>(),
+    deletingIds: new Set<string>(),
   },
 };
 
@@ -168,6 +172,8 @@ export const NotEmpty: Story = {
     ],
     updateTodo: fn(),
     deleteTodo: fn(),
+    updatingIds: new Set<string>(),
+    deletingIds: new Set<string>(),
   },
 };
 
@@ -177,6 +183,8 @@ export const Empty: Story = {
     todos: [],
     updateTodo: fn(),
     deleteTodo: fn(),
+    updatingIds: new Set<string>(),
+    deletingIds: new Set<string>(),
   },
 };
 
@@ -186,6 +194,8 @@ export const Loading: Story = {
     todos: [],
     updateTodo: fn(),
     deleteTodo: fn(),
+    updatingIds: new Set<string>(),
+    deletingIds: new Set<string>(),
   },
 };
 
@@ -210,5 +220,7 @@ export const LoadingWithData: Story = {
     ],
     updateTodo: fn(),
     deleteTodo: fn(),
+    updatingIds: new Set<string>(),
+    deletingIds: new Set<string>(),
   },
 };

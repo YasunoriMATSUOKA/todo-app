@@ -8,6 +8,8 @@ interface TodoListProps {
   todos: Todo[];
   updateTodo: (todoUpdate: TodoUpdate) => Promise<Todo>;
   deleteTodo: (id: string) => Promise<void>;
+  updatingIds: Set<string>;
+  deletingIds: Set<string>;
 }
 
 const TodoListComponent: React.FC<TodoListProps> = ({
@@ -15,6 +17,8 @@ const TodoListComponent: React.FC<TodoListProps> = ({
   todos,
   updateTodo,
   deleteTodo,
+  updatingIds,
+  deletingIds,
 }: TodoListProps) => {
   if (isLoading) {
     return <TodoListSkeleton />;
@@ -27,7 +31,8 @@ const TodoListComponent: React.FC<TodoListProps> = ({
           todo={todo}
           updateTodo={updateTodo}
           deleteTodo={deleteTodo}
-          isLoading={isLoading}
+          isUpdating={updatingIds.has(todo.id)}
+          isDeleting={deletingIds.has(todo.id)}
         />
       ))}
     </>

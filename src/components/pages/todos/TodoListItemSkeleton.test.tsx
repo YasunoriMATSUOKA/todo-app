@@ -25,6 +25,7 @@ describe("TodoListItemSkeleton", () => {
     const deleteButton = screen.getByRole("button", { name: /delete/i });
     expect(deleteButton).toBeInTheDocument();
     expect(deleteButton).toBeDisabled();
+    expect(deleteButton).toHaveTextContent("Delete");
   });
 
   it("should have correct layout structure", () => {

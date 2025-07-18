@@ -2,7 +2,7 @@ import { act, renderHook, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import useTodo from "./todo.hooks";
 import { TodoService } from "./todo.service";
-import { Todo, TodoCreate, TodoUpdate } from "./todo.types";
+import { Todo } from "./todo.types";
 
 vi.mock("./todo.service");
 
@@ -82,117 +82,94 @@ describe("useTodo", () => {
       });
     });
 
-    it("should set isLoading to true when listing todos, then false when complete", async () => {
+    it("should add created todo to todos state without calling list", async () => {
+      const newTodo: Todo = {
+        id: "3",
+        text: "New Todo",
+        done: false,
+        createdAt: new Date("2025-01-03"),
+        updatedAt: new Date("2025-01-03"),
+      };
+      mockTodoService.create.mockResolvedValue(newTodo);
       mockTodoService.list.mockResolvedValue(mockTodos);
       const { result } = renderHook(() => useTodo());
 
+      // Wait for initial load
       await waitFor(() => {
-        expect(result.current.isLoading).toBe(false);
+        expect(result.current.todos).toEqual(mockTodos);
       });
 
-      let promise: Promise<Todo[]>;
-      act(() => {
-        promise = result.current.list();
-      });
-
-      await waitFor(() => {
-        expect(result.current.isLoading).toBe(true);
-      });
+      // Clear the mock to ensure list is not called again
+      mockTodoService.list.mockClear();
 
       await act(async () => {
-        await promise;
+        await result.current.create({ text: "New Todo" });
       });
 
-      await waitFor(() => {
-        expect(result.current.isLoading).toBe(false);
-      });
+      // Verify list was not called after create
+      expect(mockTodoService.list).not.toHaveBeenCalled();
+
+      // Verify the new todo was added to the state
+      expect(result.current.todos).toEqual([...mockTodos, newTodo]);
     });
 
-    it("should set isLoading to true when creating a todo, then false when complete", async () => {
-      const todoCreate: TodoCreate = { text: "New Todo" };
-      mockTodoService.create.mockResolvedValue(mockTodo);
-      mockTodoService.list.mockResolvedValue(mockTodos);
-      const { result } = renderHook(() => useTodo());
-
-      await waitFor(() => {
-        expect(result.current.isLoading).toBe(false);
-      });
-
-      let promise: Promise<Todo>;
-      act(() => {
-        promise = result.current.create(todoCreate);
-      });
-
-      await waitFor(() => {
-        expect(result.current.isLoading).toBe(true);
-      });
-
-      await act(async () => {
-        await promise;
-      });
-
-      await waitFor(() => {
-        expect(result.current.isLoading).toBe(false);
-      });
-    });
-
-    it("should set isLoading to true when updating a todo, then false when complete", async () => {
-      const todoUpdate: TodoUpdate = {
+    it("should update todo in todos state without calling list", async () => {
+      const updatedTodo: Todo = {
         id: "1",
         text: "Updated Todo",
-        done: false,
+        done: true,
+        createdAt: new Date("2025-01-01"),
+        updatedAt: new Date("2025-01-04"),
       };
-      mockTodoService.update.mockResolvedValue(mockTodo);
+      mockTodoService.update.mockResolvedValue(updatedTodo);
       mockTodoService.list.mockResolvedValue(mockTodos);
       const { result } = renderHook(() => useTodo());
 
+      // Wait for initial load
       await waitFor(() => {
-        expect(result.current.isLoading).toBe(false);
+        expect(result.current.todos).toEqual(mockTodos);
       });
 
-      let promise: Promise<Todo>;
-      act(() => {
-        promise = result.current.update(todoUpdate);
-      });
-
-      await waitFor(() => {
-        expect(result.current.isLoading).toBe(true);
-      });
+      // Clear the mock to ensure list is not called again
+      mockTodoService.list.mockClear();
 
       await act(async () => {
-        await promise;
+        await result.current.update({
+          id: "1",
+          text: "Updated Todo",
+          done: true,
+        });
       });
 
-      await waitFor(() => {
-        expect(result.current.isLoading).toBe(false);
-      });
+      // Verify list was not called after update
+      expect(mockTodoService.list).not.toHaveBeenCalled();
+
+      // Verify the todo was updated in the state
+      expect(result.current.todos).toEqual([updatedTodo, mockTodos[1]]);
     });
 
-    it("should set isLoading to true when removing a todo, then false when complete", async () => {
+    it("should remove todo from todos state without calling list", async () => {
       mockTodoService.delete.mockResolvedValue(undefined);
       mockTodoService.list.mockResolvedValue(mockTodos);
       const { result } = renderHook(() => useTodo());
 
+      // Wait for initial load
       await waitFor(() => {
-        expect(result.current.isLoading).toBe(false);
+        expect(result.current.todos).toEqual(mockTodos);
       });
 
-      let promise: Promise<void>;
-      act(() => {
-        promise = result.current.remove("1");
-      });
-
-      await waitFor(() => {
-        expect(result.current.isLoading).toBe(true);
-      });
+      // Clear the mock to ensure list is not called again
+      mockTodoService.list.mockClear();
 
       await act(async () => {
-        await promise;
+        await result.current.remove("1");
       });
 
-      await waitFor(() => {
-        expect(result.current.isLoading).toBe(false);
-      });
+      // Verify list was not called after delete
+      expect(mockTodoService.list).not.toHaveBeenCalled();
+
+      // Verify the todo was removed from the state
+      expect(result.current.todos).toEqual([mockTodos[1]]);
     });
 
     it("should set isLoading to true when searching todos, then false when complete", async () => {
@@ -222,14 +199,14 @@ describe("useTodo", () => {
       });
     });
 
-    it("should set isLoading to true on initial load when shouldBeRefreshed is true", async () => {
+    it("should set isListLoading to true on initial load", async () => {
       mockTodoService.list.mockResolvedValue(mockTodos);
       const { result } = renderHook(() => useTodo());
 
-      expect(result.current.isLoading).toBe(true);
+      expect(result.current.isListLoading).toBe(true);
 
       await waitFor(() => {
-        expect(result.current.isLoading).toBe(false);
+        expect(result.current.isListLoading).toBe(false);
       });
 
       expect(result.current.todos).toEqual(mockTodos);
@@ -320,6 +297,177 @@ describe("useTodo", () => {
 
       await waitFor(() => {
         expect(result.current.isLoading).toBe(false);
+      });
+    });
+  });
+
+  describe("individual loading states", () => {
+    it("should track isListLoading separately from other operations", async () => {
+      mockTodoService.list.mockResolvedValue(mockTodos);
+      const { result } = renderHook(() => useTodo());
+
+      // Initial list loading
+      expect(result.current.isListLoading).toBe(true);
+
+      await waitFor(() => {
+        expect(result.current.isListLoading).toBe(false);
+      });
+
+      // List loading should not affect other states
+      expect(result.current.isCreating).toBe(false);
+      expect(result.current.updatingIds.size).toBe(0);
+      expect(result.current.deletingIds.size).toBe(0);
+    });
+
+    it("should track isCreating state during create operation", async () => {
+      const newTodo: Todo = {
+        id: "3",
+        text: "New Todo",
+        done: false,
+        createdAt: new Date("2025-01-03"),
+        updatedAt: new Date("2025-01-03"),
+      };
+      mockTodoService.create.mockResolvedValue(newTodo);
+      mockTodoService.list.mockResolvedValue(mockTodos);
+      const { result } = renderHook(() => useTodo());
+
+      await waitFor(() => {
+        expect(result.current.isListLoading).toBe(false);
+      });
+
+      let promise: Promise<Todo>;
+      act(() => {
+        promise = result.current.create({ text: "New Todo" });
+      });
+
+      await waitFor(() => {
+        expect(result.current.isCreating).toBe(true);
+      });
+
+      await act(async () => {
+        await promise;
+      });
+
+      await waitFor(() => {
+        expect(result.current.isCreating).toBe(false);
+      });
+    });
+
+    it("should track individual todo update states in updatingIds", async () => {
+      const updatedTodo: Todo = {
+        ...mockTodo,
+        text: "Updated Todo",
+        updatedAt: new Date("2025-01-04"),
+      };
+      mockTodoService.update.mockResolvedValue(updatedTodo);
+      mockTodoService.list.mockResolvedValue(mockTodos);
+      const { result } = renderHook(() => useTodo());
+
+      await waitFor(() => {
+        expect(result.current.isListLoading).toBe(false);
+      });
+
+      let promise: Promise<Todo>;
+      act(() => {
+        promise = result.current.update({
+          id: "1",
+          text: "Updated Todo",
+          done: false,
+        });
+      });
+
+      await waitFor(() => {
+        expect(result.current.updatingIds.has("1")).toBe(true);
+        expect(result.current.updatingIds.size).toBe(1);
+      });
+
+      await act(async () => {
+        await promise;
+      });
+
+      await waitFor(() => {
+        expect(result.current.updatingIds.has("1")).toBe(false);
+        expect(result.current.updatingIds.size).toBe(0);
+      });
+    });
+
+    it("should track individual todo delete states in deletingIds", async () => {
+      mockTodoService.delete.mockResolvedValue(undefined);
+      mockTodoService.list.mockResolvedValue(mockTodos);
+      const { result } = renderHook(() => useTodo());
+
+      await waitFor(() => {
+        expect(result.current.isListLoading).toBe(false);
+      });
+
+      let promise: Promise<void>;
+      act(() => {
+        promise = result.current.remove("1");
+      });
+
+      await waitFor(() => {
+        expect(result.current.deletingIds.has("1")).toBe(true);
+        expect(result.current.deletingIds.size).toBe(1);
+      });
+
+      await act(async () => {
+        await promise;
+      });
+
+      await waitFor(() => {
+        expect(result.current.deletingIds.has("1")).toBe(false);
+        expect(result.current.deletingIds.size).toBe(0);
+      });
+    });
+
+    it("should allow multiple simultaneous update operations", async () => {
+      const updatedTodo1: Todo = {
+        ...mockTodos[0],
+        text: "Updated Todo 1",
+      };
+      const updatedTodo2: Todo = {
+        ...mockTodos[1],
+        text: "Updated Todo 2",
+      };
+
+      mockTodoService.update
+        .mockResolvedValueOnce(updatedTodo1)
+        .mockResolvedValueOnce(updatedTodo2);
+      mockTodoService.list.mockResolvedValue(mockTodos);
+      const { result } = renderHook(() => useTodo());
+
+      await waitFor(() => {
+        expect(result.current.isListLoading).toBe(false);
+      });
+
+      // Start two updates simultaneously
+      let promise1: Promise<Todo>;
+      let promise2: Promise<Todo>;
+      act(() => {
+        promise1 = result.current.update({
+          id: "1",
+          text: "Updated Todo 1",
+          done: false,
+        });
+        promise2 = result.current.update({
+          id: "2",
+          text: "Updated Todo 2",
+          done: true,
+        });
+      });
+
+      await waitFor(() => {
+        expect(result.current.updatingIds.has("1")).toBe(true);
+        expect(result.current.updatingIds.has("2")).toBe(true);
+        expect(result.current.updatingIds.size).toBe(2);
+      });
+
+      await act(async () => {
+        await Promise.all([promise1, promise2]);
+      });
+
+      await waitFor(() => {
+        expect(result.current.updatingIds.size).toBe(0);
       });
     });
   });

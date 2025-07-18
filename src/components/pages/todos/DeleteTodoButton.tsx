@@ -6,17 +6,19 @@ interface DeleteTodoButtonProps {
   todo: Todo;
   deleteTodo: (id: string) => Promise<void>;
   isLoading: boolean;
+  isDisabled?: boolean;
 }
 
 const DeleteTodoButtonComponent: React.FC<DeleteTodoButtonProps> = ({
   todo,
   deleteTodo,
   isLoading,
+  isDisabled = false,
 }: DeleteTodoButtonProps) => {
   return (
     <Button
       variant="outline"
-      disabled={isLoading}
+      disabled={isLoading || isDisabled}
       onClick={() => {
         deleteTodo(todo.id)
           .then(() => {
@@ -27,7 +29,7 @@ const DeleteTodoButtonComponent: React.FC<DeleteTodoButtonProps> = ({
           });
       }}
     >
-      X Delete
+      {isLoading ? "Deleting..." : "Delete"}
     </Button>
   );
 };
