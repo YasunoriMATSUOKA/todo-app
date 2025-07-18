@@ -1,9 +1,10 @@
 import DeleteTodoButtonComponent from "@/components/pages/todos/DeleteTodoButton";
+import UpdateTodoButtonComponent from "@/components/pages/todos/UpdateTodoButton";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Todo, TodoUpdate } from "@/lib/feature/todo/todo.types";
 import { cn } from "@/lib/utils";
-import React from "react";
+import React, { useState } from "react";
 
 interface TodoListItemProps {
   todo: Todo;
@@ -16,6 +17,40 @@ const TodoListItemComponent: React.FC<TodoListItemProps> = ({
   updateTodo,
   deleteTodo,
 }: TodoListItemProps) => {
+  const [editedText, setEditedText] = useState(todo.text);
+  const [isTextChanged, setIsTextChanged] = useState(false);
+
+  const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditedText(e.target.value);
+    setIsTextChanged(e.target.value !== todo.text);
+  };
+
+  const handleSave = async () => {
+    if (isTextChanged) {
+      await updateTodo({
+        id: todo.id,
+        text: editedText,
+        done: todo.done,
+      });
+      setIsTextChanged(false);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Escape") {
+      setEditedText(todo.text);
+      setIsTextChanged(false);
+    }
+  };
+
+  const handleCheckboxChange = async (checked: boolean) => {
+    await updateTodo({
+      id: todo.id,
+      text: todo.text,
+      done: checked,
+    });
+  };
+
   return (
     <div
       key={todo.id}
@@ -24,28 +59,17 @@ const TodoListItemComponent: React.FC<TodoListItemProps> = ({
       <Checkbox
         id={todo.id}
         checked={todo.done}
-        onCheckedChange={(checked) => {
-          updateTodo({
-            id: todo.id,
-            text: todo.text,
-            done: checked as boolean,
-          }).then(() => {
-            console.log("Todo Updated");
-          });
-        }}
+        onCheckedChange={handleCheckboxChange}
       />
       <Input
         className={cn("flex-1", todo.done && "line-through")}
-        value={todo.text}
-        onChange={(e) => {
-          updateTodo({
-            id: todo.id,
-            text: e.target.value,
-            done: todo.done,
-          }).then(() => {
-            console.log("Todo Updated");
-          });
-        }}
+        value={editedText}
+        onChange={handleTextChange}
+        onKeyDown={handleKeyDown}
+      />
+      <UpdateTodoButtonComponent
+        updateTodo={handleSave}
+        isDisabled={!isTextChanged}
       />
       <DeleteTodoButtonComponent todo={todo} deleteTodo={deleteTodo} />
     </div>

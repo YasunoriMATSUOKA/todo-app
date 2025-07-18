@@ -89,3 +89,31 @@ export const Done: Story = {
     deleteTodo: fn(),
   },
 };
+
+export const EditingText: Story = {
+  args: {
+    todo: {
+      id: "1",
+      text: "Type here to see Save button enabled",
+      done: false,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    updateTodo: fn(),
+    deleteTodo: fn(),
+  },
+};
+
+export const WithLongText: Story = {
+  args: {
+    todo: {
+      id: "1",
+      text: "This is a very long todo text that might wrap to multiple lines depending on the container width",
+      done: false,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    updateTodo: fn(),
+    deleteTodo: fn(),
+  },
+};
