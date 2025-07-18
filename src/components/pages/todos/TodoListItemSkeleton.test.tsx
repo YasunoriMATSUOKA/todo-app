@@ -22,9 +22,10 @@ describe("TodoListItemSkeleton", () => {
     expect(updateButton).toBeDisabled();
 
     // 削除ボタンが実際のコンポーネントとして存在し、無効化されていることを確認
-    const deleteButton = screen.getByRole("button", { name: /deleting/i });
+    const deleteButton = screen.getByRole("button", { name: /delete/i });
     expect(deleteButton).toBeInTheDocument();
     expect(deleteButton).toBeDisabled();
+    expect(deleteButton).toHaveTextContent("Delete");
   });
 
   it("should have correct layout structure", () => {
