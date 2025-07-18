@@ -15,8 +15,8 @@ const CreateNewTodoButtonComponent: React.FC<CreateNewTodoButtonProps> = ({
       onClick={() => {
         createTodo({
           text: "New Todo",
-        }).then(() => {
-          console.log("Todo Created");
+        }).then((todo) => {
+          console.log("Todo Created", todo);
         });
       }}
     >
