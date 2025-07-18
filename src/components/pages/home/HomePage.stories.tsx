@@ -22,7 +22,7 @@ export const Example: Story = {
 
     const h2 = canvas.getByRole("heading", { name: "Todos" });
     const createNewTodoButton = canvas.getByRole("button", {
-      name: "+ Create New Todo",
+      name: "Create New Todo",
     });
     await expect(h2).toBeInTheDocument();
     await expect(createNewTodoButton).toBeInTheDocument();

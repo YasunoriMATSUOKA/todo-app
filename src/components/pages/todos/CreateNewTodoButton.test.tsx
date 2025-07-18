@@ -14,7 +14,7 @@ describe("CreateNewTodoButtonComponent", () => {
 
     const button = screen.getByRole("button", { name: /create new todo/i });
     expect(button).toBeInTheDocument();
-    expect(button).toHaveTextContent("+ Create New Todo");
+    expect(button).toHaveTextContent("Create New Todo");
   });
 
   it("should have full width styling", () => {
