@@ -10,7 +10,7 @@ describe("UpdateTodoButtonComponent", () => {
     vi.clearAllMocks();
   });
 
-  it("should render Save button", () => {
+  it("should render Update button", () => {
     render(
       <UpdateTodoButtonComponent
         updateTodo={mockUpdateTodo}
@@ -18,7 +18,7 @@ describe("UpdateTodoButtonComponent", () => {
       />,
     );
 
-    const button = screen.getByRole("button", { name: /save/i });
+    const button = screen.getByRole("button", { name: /update/i });
     expect(button).toBeInTheDocument();
   });
 
@@ -30,7 +30,7 @@ describe("UpdateTodoButtonComponent", () => {
       />,
     );
 
-    const button = screen.getByRole("button", { name: /save/i });
+    const button = screen.getByRole("button", { name: /update/i });
     expect(button).toBeDisabled();
   });
 
@@ -42,7 +42,7 @@ describe("UpdateTodoButtonComponent", () => {
       />,
     );
 
-    const button = screen.getByRole("button", { name: /save/i });
+    const button = screen.getByRole("button", { name: /update/i });
     expect(button).toBeEnabled();
   });
 
@@ -55,7 +55,7 @@ describe("UpdateTodoButtonComponent", () => {
       />,
     );
 
-    const button = screen.getByRole("button", { name: /save/i });
+    const button = screen.getByRole("button", { name: /update/i });
     await user.click(button);
 
     expect(mockUpdateTodo).toHaveBeenCalledTimes(1);
@@ -70,7 +70,7 @@ describe("UpdateTodoButtonComponent", () => {
       />,
     );
 
-    const button = screen.getByRole("button", { name: /save/i });
+    const button = screen.getByRole("button", { name: /update/i });
 
     // Try to click disabled button
     await user.click(button);
@@ -86,7 +86,7 @@ describe("UpdateTodoButtonComponent", () => {
       />,
     );
 
-    const button = screen.getByRole("button", { name: /save/i });
+    const button = screen.getByRole("button", { name: /update/i });
     expect(button).toHaveClass("border", "border-input", "bg-background");
   });
 });

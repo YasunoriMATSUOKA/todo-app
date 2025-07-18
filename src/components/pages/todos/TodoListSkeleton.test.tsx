@@ -28,7 +28,7 @@ describe("TodoListSkeleton", () => {
     expect(inputSkeletons).toHaveLength(2);
 
     // 更新ボタンが実際のコンポーネントとして存在することを確認
-    const updateButtons = screen.getAllByRole("button", { name: /save/i });
+    const updateButtons = screen.getAllByRole("button", { name: /update/i });
     expect(updateButtons).toHaveLength(2);
     updateButtons.forEach((button) => {
       expect(button).toBeDisabled();

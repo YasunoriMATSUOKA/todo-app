@@ -12,7 +12,7 @@ const UpdateTodoButtonComponent: React.FC<UpdateTodoButtonProps> = ({
 }: UpdateTodoButtonProps) => {
   return (
     <Button onClick={updateTodo} disabled={isDisabled} variant="outline">
-      Save
+      Update
     </Button>
   );
 };

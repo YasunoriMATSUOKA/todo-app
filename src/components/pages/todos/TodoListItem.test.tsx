@@ -22,8 +22,8 @@ describe("TodoListItemComponent", () => {
     mockDeleteTodo.mockResolvedValue(undefined);
   });
 
-  describe("Save button functionality", () => {
-    it("should display a Save button", () => {
+  describe("Update button functionality", () => {
+    it("should display an Update button", () => {
       render(
         <TodoListItemComponent
           todo={mockTodo}
@@ -33,11 +33,11 @@ describe("TodoListItemComponent", () => {
         />,
       );
 
-      const saveButton = screen.getByRole("button", { name: /save/i });
-      expect(saveButton).toBeInTheDocument();
+      const updateButton = screen.getByRole("button", { name: /update/i });
+      expect(updateButton).toBeInTheDocument();
     });
 
-    it("should not call updateTodo when text is changed without clicking Save", async () => {
+    it("should not call updateTodo when text is changed without clicking Update", async () => {
       const user = userEvent.setup();
       render(
         <TodoListItemComponent
@@ -55,7 +55,7 @@ describe("TodoListItemComponent", () => {
       expect(mockUpdateTodo).not.toHaveBeenCalled();
     });
 
-    it("should call updateTodo when Save button is clicked after text change", async () => {
+    it("should call updateTodo when Update button is clicked after text change", async () => {
       const user = userEvent.setup();
       render(
         <TodoListItemComponent
@@ -70,8 +70,8 @@ describe("TodoListItemComponent", () => {
       await user.clear(input);
       await user.type(input, "Updated text");
 
-      const saveButton = screen.getByRole("button", { name: /save/i });
-      await user.click(saveButton);
+      const updateButton = screen.getByRole("button", { name: /update/i });
+      await user.click(updateButton);
 
       expect(mockUpdateTodo).toHaveBeenCalledWith({
         id: mockTodo.id,
@@ -80,7 +80,7 @@ describe("TodoListItemComponent", () => {
       });
     });
 
-    it("should disable Save button when text hasn't changed", () => {
+    it("should disable Update button when text hasn't changed", () => {
       render(
         <TodoListItemComponent
           todo={mockTodo}
@@ -90,11 +90,11 @@ describe("TodoListItemComponent", () => {
         />,
       );
 
-      const saveButton = screen.getByRole("button", { name: /save/i });
-      expect(saveButton).toBeDisabled();
+      const updateButton = screen.getByRole("button", { name: /update/i });
+      expect(updateButton).toBeDisabled();
     });
 
-    it("should enable Save button when text has changed", async () => {
+    it("should enable Update button when text has changed", async () => {
       const user = userEvent.setup();
       render(
         <TodoListItemComponent
@@ -105,16 +105,16 @@ describe("TodoListItemComponent", () => {
         />,
       );
 
-      const saveButton = screen.getByRole("button", { name: /save/i });
-      expect(saveButton).toBeDisabled();
+      const updateButton = screen.getByRole("button", { name: /update/i });
+      expect(updateButton).toBeDisabled();
 
       const input = screen.getByDisplayValue(mockTodo.text);
       await user.type(input, " additional text");
 
-      expect(saveButton).toBeEnabled();
+      expect(updateButton).toBeEnabled();
     });
 
-    it("should disable Save button after successful save", async () => {
+    it("should disable Update button after successful update", async () => {
       const user = userEvent.setup();
       render(
         <TodoListItemComponent
@@ -128,11 +128,11 @@ describe("TodoListItemComponent", () => {
       const input = screen.getByDisplayValue(mockTodo.text);
       await user.type(input, " additional text");
 
-      const saveButton = screen.getByRole("button", { name: /save/i });
-      await user.click(saveButton);
+      const updateButton = screen.getByRole("button", { name: /update/i });
+      await user.click(updateButton);
 
       await waitFor(() => {
-        expect(saveButton).toBeDisabled();
+        expect(updateButton).toBeDisabled();
       });
     });
 
@@ -157,7 +157,7 @@ describe("TodoListItemComponent", () => {
       });
     });
 
-    it("should place Save button between input and Delete button", () => {
+    it("should place Update button between input and Delete button", () => {
       render(
         <TodoListItemComponent
           todo={mockTodo}
@@ -174,7 +174,7 @@ describe("TodoListItemComponent", () => {
       );
 
       expect(nonCheckboxButtons).toHaveLength(2);
-      expect(nonCheckboxButtons[0]).toHaveTextContent(/save/i);
+      expect(nonCheckboxButtons[0]).toHaveTextContent(/update/i);
       expect(nonCheckboxButtons[1]).toHaveTextContent(/delete/i);
     });
 

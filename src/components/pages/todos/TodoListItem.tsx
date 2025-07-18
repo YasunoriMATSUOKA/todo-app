@@ -27,7 +27,7 @@ const TodoListItemComponent: React.FC<TodoListItemProps> = ({
     setIsTextChanged(e.target.value !== todo.text);
   };
 
-  const handleSave = async () => {
+  const handleUpdate = async () => {
     if (isTextChanged) {
       await updateTodo({
         id: todo.id,
@@ -70,7 +70,7 @@ const TodoListItemComponent: React.FC<TodoListItemProps> = ({
         onKeyDown={handleKeyDown}
       />
       <UpdateTodoButtonComponent
-        updateTodo={handleSave}
+        updateTodo={handleUpdate}
         isDisabled={!isTextChanged || isLoading}
       />
       <DeleteTodoButtonComponent

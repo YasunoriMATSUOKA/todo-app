@@ -56,7 +56,7 @@ export const Disabled: Story = {
 export const WithClickHandler: Story = {
   args: {
     updateTodo: fn(() => {
-      alert("Save button clicked!");
+      alert("Update button clicked!");
     }),
     isDisabled: false,
   },

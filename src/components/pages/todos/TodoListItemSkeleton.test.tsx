@@ -17,7 +17,7 @@ describe("TodoListItemSkeleton", () => {
     expect(inputSkeleton).toHaveClass("h-10 flex-1");
 
     // 更新ボタンが実際のコンポーネントとして存在し、無効化されていることを確認
-    const updateButton = screen.getByRole("button", { name: /save/i });
+    const updateButton = screen.getByRole("button", { name: /update/i });
     expect(updateButton).toBeInTheDocument();
     expect(updateButton).toBeDisabled();
 
