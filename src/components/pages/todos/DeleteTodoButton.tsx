@@ -27,7 +27,7 @@ const DeleteTodoButtonComponent: React.FC<DeleteTodoButtonProps> = ({
           });
       }}
     >
-      X Delete
+      {isLoading ? "Deleting..." : "X Delete"}
     </Button>
   );
 };

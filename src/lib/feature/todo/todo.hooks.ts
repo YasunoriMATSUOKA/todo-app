@@ -9,7 +9,10 @@ const useTodo = () => {
   const [todo, setTodo] = useState<Todo | null | undefined>(null);
   const [todos, setTodos] = useState<Todo[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [shouldBeRefreshed, setShouldBeRefreshed] = useState(true);
+  const [isListLoading, setIsListLoading] = useState(true);
+  const [isCreating, setIsCreating] = useState(false);
+  const [updatingIds, setUpdatingIds] = useState<Set<string>>(new Set());
+  const [deletingIds, setDeletingIds] = useState<Set<string>>(new Set());
   const [error] = useState<Error | null | undefined>(null);
 
   const withLoading = useCallback(
@@ -29,35 +32,61 @@ const useTodo = () => {
       withLoading(async () => todoService.get(id)),
     [todoService, withLoading],
   );
-  const list = useCallback(
-    async (): Promise<Todo[]> => withLoading(async () => todoService.list()),
-    [todoService, withLoading],
-  );
+  const list = useCallback(async (): Promise<Todo[]> => {
+    setIsListLoading(true);
+    try {
+      return await todoService.list();
+    } finally {
+      setIsListLoading(false);
+    }
+  }, [todoService]);
   const create = useCallback(
-    async (todoCreate: TodoCreate): Promise<Todo> =>
-      withLoading(async () => {
+    async (todoCreate: TodoCreate): Promise<Todo> => {
+      setIsCreating(true);
+      try {
         const todo = await todoService.create(todoCreate);
-        setShouldBeRefreshed(true);
+        setTodos((prevTodos) => [...prevTodos, todo]);
         return todo;
-      }),
-    [todoService, withLoading, setShouldBeRefreshed],
+      } finally {
+        setIsCreating(false);
+      }
+    },
+    [todoService],
   );
   const update = useCallback(
-    async (todoUpdate: TodoUpdate): Promise<Todo> =>
-      withLoading(async () => {
+    async (todoUpdate: TodoUpdate): Promise<Todo> => {
+      setUpdatingIds((prev) => new Set([...prev, todoUpdate.id]));
+      try {
         const todo = await todoService.update(todoUpdate);
-        setShouldBeRefreshed(true);
+        setTodos((prevTodos) =>
+          prevTodos.map((t) => (t.id === todo.id ? todo : t)),
+        );
         return todo;
-      }),
-    [todoService, withLoading, setShouldBeRefreshed],
+      } finally {
+        setUpdatingIds((prev) => {
+          const newSet = new Set(prev);
+          newSet.delete(todoUpdate.id);
+          return newSet;
+        });
+      }
+    },
+    [todoService],
   );
   const remove = useCallback(
-    async (id: string): Promise<void> =>
-      withLoading(async () => {
+    async (id: string): Promise<void> => {
+      setDeletingIds((prev) => new Set([...prev, id]));
+      try {
         await todoService.delete(id);
-        setShouldBeRefreshed(true);
-      }),
-    [todoService, withLoading, setShouldBeRefreshed],
+        setTodos((prevTodos) => prevTodos.filter((t) => t.id !== id));
+      } finally {
+        setDeletingIds((prev) => {
+          const newSet = new Set(prev);
+          newSet.delete(id);
+          return newSet;
+        });
+      }
+    },
+    [todoService],
   );
   const search = useCallback(
     async (searchKey: keyof Todo, searchValue: unknown): Promise<Todo[]> =>
@@ -66,17 +95,10 @@ const useTodo = () => {
   );
 
   useEffect(() => {
-    if (!shouldBeRefreshed) {
-      return;
-    }
-    list()
-      .then((todos) => {
-        setTodos(todos);
-      })
-      .finally(() => {
-        setShouldBeRefreshed(false);
-      });
-  }, [shouldBeRefreshed, list, setTodos]);
+    list().then((todos) => {
+      setTodos(todos);
+    });
+  }, [list]);
 
   useEffect(() => {
     if (id) {
@@ -97,6 +119,10 @@ const useTodo = () => {
     todo,
     todos,
     isLoading,
+    isListLoading,
+    isCreating,
+    updatingIds,
+    deletingIds,
     error,
     create,
     get,

@@ -35,7 +35,7 @@ describe("TodoListSkeleton", () => {
     });
 
     // 削除ボタンが実際のコンポーネントとして存在することを確認
-    const deleteButtons = screen.getAllByRole("button", { name: /delete/i });
+    const deleteButtons = screen.getAllByRole("button", { name: /deleting/i });
     expect(deleteButtons).toHaveLength(2);
     deleteButtons.forEach((button) => {
       expect(button).toBeDisabled();

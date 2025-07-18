@@ -29,7 +29,8 @@ describe("TodoListItemComponent", () => {
           todo={mockTodo}
           updateTodo={mockUpdateTodo}
           deleteTodo={mockDeleteTodo}
-          isLoading={false}
+          isUpdating={false}
+          isDeleting={false}
         />,
       );
 
@@ -44,7 +45,8 @@ describe("TodoListItemComponent", () => {
           todo={mockTodo}
           updateTodo={mockUpdateTodo}
           deleteTodo={mockDeleteTodo}
-          isLoading={false}
+          isUpdating={false}
+          isDeleting={false}
         />,
       );
 
@@ -62,7 +64,8 @@ describe("TodoListItemComponent", () => {
           todo={mockTodo}
           updateTodo={mockUpdateTodo}
           deleteTodo={mockDeleteTodo}
-          isLoading={false}
+          isUpdating={false}
+          isDeleting={false}
         />,
       );
 
@@ -86,7 +89,8 @@ describe("TodoListItemComponent", () => {
           todo={mockTodo}
           updateTodo={mockUpdateTodo}
           deleteTodo={mockDeleteTodo}
-          isLoading={false}
+          isUpdating={false}
+          isDeleting={false}
         />,
       );
 
@@ -101,7 +105,8 @@ describe("TodoListItemComponent", () => {
           todo={mockTodo}
           updateTodo={mockUpdateTodo}
           deleteTodo={mockDeleteTodo}
-          isLoading={false}
+          isUpdating={false}
+          isDeleting={false}
         />,
       );
 
@@ -121,7 +126,8 @@ describe("TodoListItemComponent", () => {
           todo={mockTodo}
           updateTodo={mockUpdateTodo}
           deleteTodo={mockDeleteTodo}
-          isLoading={false}
+          isUpdating={false}
+          isDeleting={false}
         />,
       );
 
@@ -143,7 +149,8 @@ describe("TodoListItemComponent", () => {
           todo={mockTodo}
           updateTodo={mockUpdateTodo}
           deleteTodo={mockDeleteTodo}
-          isLoading={false}
+          isUpdating={false}
+          isDeleting={false}
         />,
       );
 
@@ -163,7 +170,8 @@ describe("TodoListItemComponent", () => {
           todo={mockTodo}
           updateTodo={mockUpdateTodo}
           deleteTodo={mockDeleteTodo}
-          isLoading={false}
+          isUpdating={false}
+          isDeleting={false}
         />,
       );
 
@@ -185,7 +193,8 @@ describe("TodoListItemComponent", () => {
           todo={mockTodo}
           updateTodo={mockUpdateTodo}
           deleteTodo={mockDeleteTodo}
-          isLoading={false}
+          isUpdating={false}
+          isDeleting={false}
         />,
       );
 

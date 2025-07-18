@@ -4,15 +4,17 @@ import React from "react";
 interface UpdateTodoButtonProps {
   updateTodo: () => void;
   isDisabled: boolean;
+  isLoading?: boolean;
 }
 
 const UpdateTodoButtonComponent: React.FC<UpdateTodoButtonProps> = ({
   updateTodo,
   isDisabled,
+  isLoading = false,
 }: UpdateTodoButtonProps) => {
   return (
     <Button onClick={updateTodo} disabled={isDisabled} variant="outline">
-      Update
+      {isLoading ? "Updating..." : "Update"}
     </Button>
   );
 };

@@ -69,6 +69,10 @@ describe("TodosPageComponent", () => {
     vi.clearAllMocks();
     mockUseTodo.mockReturnValue({
       isLoading: false,
+      isListLoading: false,
+      isCreating: false,
+      updatingIds: new Set<string>(),
+      deletingIds: new Set<string>(),
       todos: mockTodos,
       create: mockCreate,
       update: mockUpdate,
@@ -106,7 +110,11 @@ describe("TodosPageComponent", () => {
 
   it("should pass isLoading state to child components", () => {
     mockUseTodo.mockReturnValue({
-      isLoading: true,
+      isLoading: false,
+      isListLoading: true,
+      isCreating: true,
+      updatingIds: new Set<string>(),
+      deletingIds: new Set<string>(),
       todos: [],
       create: mockCreate,
       update: mockUpdate,
@@ -145,6 +153,10 @@ describe("TodosPageComponent", () => {
   it("should handle empty todos list", () => {
     mockUseTodo.mockReturnValue({
       isLoading: false,
+      isListLoading: false,
+      isCreating: false,
+      updatingIds: new Set<string>(),
+      deletingIds: new Set<string>(),
       todos: [],
       create: mockCreate,
       update: mockUpdate,
@@ -182,7 +194,11 @@ describe("TodosPageComponent", () => {
 
   it("should handle loading state with multiple todos", () => {
     mockUseTodo.mockReturnValue({
-      isLoading: true,
+      isLoading: false,
+      isListLoading: true,
+      isCreating: false,
+      updatingIds: new Set<string>(),
+      deletingIds: new Set<string>(),
       todos: mockTodos, // Even with todos, loading state should show skeleton
       create: mockCreate,
       update: mockUpdate,
