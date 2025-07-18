@@ -64,12 +64,14 @@ const TodoListItemComponent: React.FC<TodoListItemProps> = ({
         id={todo.id}
         checked={todo.done}
         onCheckedChange={handleCheckboxChange}
+        disabled={isUpdating}
       />
       <Input
         className={cn("flex-1", todo.done && "line-through")}
         value={editedText}
         onChange={handleTextChange}
         onKeyDown={handleKeyDown}
+        disabled={isUpdating}
       />
       <UpdateTodoButtonComponent
         updateTodo={handleUpdate}

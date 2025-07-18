@@ -27,7 +27,7 @@ const CreateNewTodoButtonComponent: React.FC<CreateNewTodoButtonProps> = ({
           });
       }}
     >
-      Create New Todo
+      {isLoading ? "Creating New Todo..." : "Create New Todo"}
     </Button>
   );
 };
