@@ -2,11 +2,24 @@ import js from "@eslint/js";
 import eslintConfigPrettier from "eslint-config-prettier";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
+import storybook from "eslint-plugin-storybook";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
 export default tseslint.config(
-  { ignores: ["dist"] },
+  {
+    ignores: [
+      "dist",
+      "storybook-static",
+      "node_modules",
+      ".vscode",
+      "coverage",
+      "*.config.js",
+      "*.config.ts",
+      "public",
+      ".env*",
+    ],
+  },
   {
     extends: [
       js.configs.recommended,
@@ -27,4 +40,5 @@ export default tseslint.config(
       "react-refresh/only-export-components": "off",
     },
   },
+  ...storybook.configs["flat/recommended"],
 );

@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import { fn } from "@storybook/test";
+import { fn } from "storybook/test";
 import TodoListItemComponent from "./TodoListItem";
 
 const meta = {
@@ -32,6 +32,13 @@ const meta = {
       description: "The function to delete the todo",
       defaultValue: fn(),
     },
+    isLoading: {
+      name: "isLoading",
+      description:
+        "Whether the buttons should be disabled due to loading state",
+      control: "boolean",
+      defaultValue: false,
+    },
   },
   args: {
     todo: {
@@ -42,6 +49,7 @@ const meta = {
       updatedAt: new Date(),
     },
     deleteTodo: fn(),
+    isLoading: false,
   },
 } satisfies Meta<typeof TodoListItemComponent>;
 
@@ -59,6 +67,7 @@ export const Example: Story = {
     },
     updateTodo: fn(),
     deleteTodo: fn(),
+    isLoading: false,
   },
 };
 
@@ -73,6 +82,7 @@ export const NotDone: Story = {
     },
     updateTodo: fn(),
     deleteTodo: fn(),
+    isLoading: false,
   },
 };
 
@@ -87,5 +97,51 @@ export const Done: Story = {
     },
     updateTodo: fn(),
     deleteTodo: fn(),
+    isLoading: false,
+  },
+};
+
+export const EditingText: Story = {
+  args: {
+    todo: {
+      id: "1",
+      text: "Type here to see Save button enabled",
+      done: false,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    updateTodo: fn(),
+    deleteTodo: fn(),
+    isLoading: false,
+  },
+};
+
+export const WithLongText: Story = {
+  args: {
+    todo: {
+      id: "1",
+      text: "This is a very long todo text that might wrap to multiple lines depending on the container width",
+      done: false,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    updateTodo: fn(),
+    deleteTodo: fn(),
+    isLoading: false,
+  },
+};
+
+export const Loading: Story = {
+  args: {
+    todo: {
+      id: "1",
+      text: "This todo is in loading state",
+      done: false,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    updateTodo: fn(),
+    deleteTodo: fn(),
+    isLoading: true,
   },
 };

@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import { fn } from "@storybook/test";
+import { fn } from "storybook/test";
 import TodoListComponent from "./TodoList";
 
 const meta = {
@@ -97,6 +97,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Example: Story = {
   args: {
+    isLoading: false,
     todos: [
       {
         id: "1",
@@ -134,6 +135,7 @@ export const Example: Story = {
 
 export const NotEmpty: Story = {
   args: {
+    isLoading: false,
     todos: [
       {
         id: "1",
@@ -171,7 +173,41 @@ export const NotEmpty: Story = {
 
 export const Empty: Story = {
   args: {
+    isLoading: false,
     todos: [],
+    updateTodo: fn(),
+    deleteTodo: fn(),
+  },
+};
+
+export const Loading: Story = {
+  args: {
+    isLoading: true,
+    todos: [],
+    updateTodo: fn(),
+    deleteTodo: fn(),
+  },
+};
+
+export const LoadingWithData: Story = {
+  args: {
+    isLoading: true,
+    todos: [
+      {
+        id: "1",
+        text: "Todo 1 Example",
+        done: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        id: "2",
+        text: "Todo 2 Example",
+        done: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ],
     updateTodo: fn(),
     deleteTodo: fn(),
   },

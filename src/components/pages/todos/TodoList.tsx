@@ -1,4 +1,5 @@
 import TodoListItemComponent from "@/components/pages/todos/TodoListItem";
+import TodoListSkeleton from "@/components/pages/todos/TodoListSkeleton";
 import { Todo, TodoUpdate } from "@/lib/feature/todo/todo.types";
 import React from "react";
 
@@ -16,7 +17,7 @@ const TodoListComponent: React.FC<TodoListProps> = ({
   deleteTodo,
 }: TodoListProps) => {
   if (isLoading) {
-    return null;
+    return <TodoListSkeleton />;
   }
   return (
     <>
@@ -26,6 +27,7 @@ const TodoListComponent: React.FC<TodoListProps> = ({
           todo={todo}
           updateTodo={updateTodo}
           deleteTodo={deleteTodo}
+          isLoading={isLoading}
         />
       ))}
     </>
