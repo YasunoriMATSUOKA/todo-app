@@ -24,7 +24,7 @@ describe("DeleteTodoButtonComponent", () => {
 
     const button = screen.getByRole("button", { name: /delete/i });
     expect(button).toBeInTheDocument();
-    expect(button).toHaveTextContent("X Delete");
+    expect(button).toHaveTextContent("Delete");
   });
 
   it("should call deleteTodo when clicked", async () => {

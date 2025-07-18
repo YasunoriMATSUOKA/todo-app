@@ -32,7 +32,7 @@ export const Example: Story = {
     // Wait for the new todo to appear
     const checkbox1 = await canvas.findByRole("checkbox", { checked: false });
     const input1 = canvas.getByRole("textbox", { name: "" });
-    const deleteButton1 = canvas.getByRole("button", { name: "X Delete" });
+    const deleteButton1 = canvas.getByRole("button", { name: "Delete" });
     await expect(checkbox1).toBeInTheDocument();
     await expect(input1).toBeInTheDocument();
     await expect(input1).toHaveValue("New Todo");
