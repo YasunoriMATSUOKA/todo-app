@@ -20,7 +20,10 @@ const TodosPageComponent: React.FC = () => {
         />
       </div>
       <div className="m-3">
-        <CreateNewTodoButtonComponent createTodo={create} />
+        <CreateNewTodoButtonComponent
+          createTodo={create}
+          isLoading={isLoading}
+        />
       </div>
     </>
   );

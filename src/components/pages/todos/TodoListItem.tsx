@@ -10,12 +10,14 @@ interface TodoListItemProps {
   todo: Todo;
   updateTodo: (todoUpdate: TodoUpdate) => Promise<Todo>;
   deleteTodo: (id: string) => Promise<void>;
+  isLoading: boolean;
 }
 
 const TodoListItemComponent: React.FC<TodoListItemProps> = ({
   todo,
   updateTodo,
   deleteTodo,
+  isLoading,
 }: TodoListItemProps) => {
   const [editedText, setEditedText] = useState(todo.text);
   const [isTextChanged, setIsTextChanged] = useState(false);
@@ -69,9 +71,13 @@ const TodoListItemComponent: React.FC<TodoListItemProps> = ({
       />
       <UpdateTodoButtonComponent
         updateTodo={handleSave}
-        isDisabled={!isTextChanged}
+        isDisabled={!isTextChanged || isLoading}
       />
-      <DeleteTodoButtonComponent todo={todo} deleteTodo={deleteTodo} />
+      <DeleteTodoButtonComponent
+        todo={todo}
+        deleteTodo={deleteTodo}
+        isLoading={isLoading}
+      />
     </div>
   );
 };

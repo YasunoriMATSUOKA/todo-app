@@ -27,14 +27,18 @@ describe("TodoListSkeleton", () => {
     const inputSkeletons = screen.getAllByTestId("input-skeleton");
     expect(inputSkeletons).toHaveLength(2);
 
-    const updateButtonSkeletons = screen.getAllByTestId(
-      "update-button-skeleton",
-    );
-    expect(updateButtonSkeletons).toHaveLength(2);
+    // 更新ボタンが実際のコンポーネントとして存在することを確認
+    const updateButtons = screen.getAllByRole("button", { name: /save/i });
+    expect(updateButtons).toHaveLength(2);
+    updateButtons.forEach((button) => {
+      expect(button).toBeDisabled();
+    });
 
-    const deleteButtonSkeletons = screen.getAllByTestId(
-      "delete-button-skeleton",
-    );
-    expect(deleteButtonSkeletons).toHaveLength(2);
+    // 削除ボタンが実際のコンポーネントとして存在することを確認
+    const deleteButtons = screen.getAllByRole("button", { name: /delete/i });
+    expect(deleteButtons).toHaveLength(2);
+    deleteButtons.forEach((button) => {
+      expect(button).toBeDisabled();
+    });
   });
 });

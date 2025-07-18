@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import TodoListItemSkeleton from "./TodoListItemSkeleton";
 
 describe("TodoListItemSkeleton", () => {
-  it("should render skeleton elements", () => {
+  it("should render skeleton elements and actual buttons", () => {
     render(<TodoListItemSkeleton />);
 
     // チェックボックスのスケルトンが存在することを確認
@@ -16,15 +16,15 @@ describe("TodoListItemSkeleton", () => {
     expect(inputSkeleton).toBeInTheDocument();
     expect(inputSkeleton).toHaveClass("h-10 flex-1");
 
-    // 更新ボタンのスケルトンが存在することを確認
-    const updateButtonSkeleton = screen.getByTestId("update-button-skeleton");
-    expect(updateButtonSkeleton).toBeInTheDocument();
-    expect(updateButtonSkeleton).toHaveClass("h-10 w-10");
+    // 更新ボタンが実際のコンポーネントとして存在し、無効化されていることを確認
+    const updateButton = screen.getByRole("button", { name: /save/i });
+    expect(updateButton).toBeInTheDocument();
+    expect(updateButton).toBeDisabled();
 
-    // 削除ボタンのスケルトンが存在することを確認
-    const deleteButtonSkeleton = screen.getByTestId("delete-button-skeleton");
-    expect(deleteButtonSkeleton).toBeInTheDocument();
-    expect(deleteButtonSkeleton).toHaveClass("h-10 w-10");
+    // 削除ボタンが実際のコンポーネントとして存在し、無効化されていることを確認
+    const deleteButton = screen.getByRole("button", { name: /delete/i });
+    expect(deleteButton).toBeInTheDocument();
+    expect(deleteButton).toBeDisabled();
   });
 
   it("should have correct layout structure", () => {

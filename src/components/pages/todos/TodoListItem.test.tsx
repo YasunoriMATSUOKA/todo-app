@@ -29,6 +29,7 @@ describe("TodoListItemComponent", () => {
           todo={mockTodo}
           updateTodo={mockUpdateTodo}
           deleteTodo={mockDeleteTodo}
+          isLoading={false}
         />,
       );
 
@@ -43,6 +44,7 @@ describe("TodoListItemComponent", () => {
           todo={mockTodo}
           updateTodo={mockUpdateTodo}
           deleteTodo={mockDeleteTodo}
+          isLoading={false}
         />,
       );
 
@@ -60,6 +62,7 @@ describe("TodoListItemComponent", () => {
           todo={mockTodo}
           updateTodo={mockUpdateTodo}
           deleteTodo={mockDeleteTodo}
+          isLoading={false}
         />,
       );
 
@@ -83,6 +86,7 @@ describe("TodoListItemComponent", () => {
           todo={mockTodo}
           updateTodo={mockUpdateTodo}
           deleteTodo={mockDeleteTodo}
+          isLoading={false}
         />,
       );
 
@@ -97,6 +101,7 @@ describe("TodoListItemComponent", () => {
           todo={mockTodo}
           updateTodo={mockUpdateTodo}
           deleteTodo={mockDeleteTodo}
+          isLoading={false}
         />,
       );
 
@@ -116,6 +121,7 @@ describe("TodoListItemComponent", () => {
           todo={mockTodo}
           updateTodo={mockUpdateTodo}
           deleteTodo={mockDeleteTodo}
+          isLoading={false}
         />,
       );
 
@@ -137,6 +143,7 @@ describe("TodoListItemComponent", () => {
           todo={mockTodo}
           updateTodo={mockUpdateTodo}
           deleteTodo={mockDeleteTodo}
+          isLoading={false}
         />,
       );
 
@@ -156,6 +163,7 @@ describe("TodoListItemComponent", () => {
           todo={mockTodo}
           updateTodo={mockUpdateTodo}
           deleteTodo={mockDeleteTodo}
+          isLoading={false}
         />,
       );
 
@@ -177,6 +185,7 @@ describe("TodoListItemComponent", () => {
           todo={mockTodo}
           updateTodo={mockUpdateTodo}
           deleteTodo={mockDeleteTodo}
+          isLoading={false}
         />,
       );
 

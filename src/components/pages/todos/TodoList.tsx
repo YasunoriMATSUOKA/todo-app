@@ -27,6 +27,7 @@ const TodoListComponent: React.FC<TodoListProps> = ({
           todo={todo}
           updateTodo={updateTodo}
           deleteTodo={deleteTodo}
+          isLoading={isLoading}
         />
       ))}
     </>
