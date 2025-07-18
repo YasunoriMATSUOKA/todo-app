@@ -82,8 +82,6 @@ describe("useTodo", () => {
       });
     });
 
-
-
     it("should add created todo to todos state without calling list", async () => {
       const newTodo: Todo = {
         id: "3",
@@ -114,7 +112,6 @@ describe("useTodo", () => {
       // Verify the new todo was added to the state
       expect(result.current.todos).toEqual([...mockTodos, newTodo]);
     });
-
 
     it("should update todo in todos state without calling list", async () => {
       const updatedTodo: Todo = {
@@ -150,7 +147,6 @@ describe("useTodo", () => {
       // Verify the todo was updated in the state
       expect(result.current.todos).toEqual([updatedTodo, mockTodos[1]]);
     });
-
 
     it("should remove todo from todos state without calling list", async () => {
       mockTodoService.delete.mockResolvedValue(undefined);
