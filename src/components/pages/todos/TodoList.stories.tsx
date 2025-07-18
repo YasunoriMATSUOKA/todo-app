@@ -179,3 +179,36 @@ export const Empty: Story = {
     deleteTodo: fn(),
   },
 };
+
+export const Loading: Story = {
+  args: {
+    isLoading: true,
+    todos: [],
+    updateTodo: fn(),
+    deleteTodo: fn(),
+  },
+};
+
+export const LoadingWithData: Story = {
+  args: {
+    isLoading: true,
+    todos: [
+      {
+        id: "1",
+        text: "Todo 1 Example",
+        done: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        id: "2",
+        text: "Todo 2 Example",
+        done: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ],
+    updateTodo: fn(),
+    deleteTodo: fn(),
+  },
+};
