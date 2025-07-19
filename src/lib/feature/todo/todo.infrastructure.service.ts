@@ -1,6 +1,12 @@
 import { sortObjectArray } from "@/lib/common/sort";
-import { PrivateKey } from "symbol-sdk";
-import { Network, SymbolFacade, descriptors } from "symbol-sdk/symbol";
+import { PrivateKey, utils } from "symbol-sdk";
+import {
+  Network,
+  SymbolFacade,
+  descriptors,
+  metadataGenerateKey,
+  metadataUpdateValue,
+} from "symbol-sdk/symbol";
 import { ITodoService } from "./todo.service";
 import { Todo, TodoCreate, TodoUpdate } from "./todo.types";
 
@@ -10,23 +16,18 @@ export class TodoInfrastructureService implements ITodoService {
   async create(todoCreate: TodoCreate): Promise<Todo> {
     // Note: temporally impl to check symbol sdk worked or not
     const facade = new SymbolFacade(Network.TESTNET);
-    const account = facade.createAccount(PrivateKey.random());
-    const descriptor = new descriptors.TransferTransactionV1Descriptor(
-      account.address,
-    );
-    const transaction = facade.createTransactionFromTypedDescriptor(
-      descriptor,
-      account.publicKey,
-      100,
-      2 * 3600,
-    );
-    const signature = account.signTransaction(transaction);
-    const jsonPayload = facade.transactionFactory.static.attachSignature(
-      transaction,
-      signature,
-    );
-    console.log({ jsonPayload });
+    const rawPrivateKey = import.meta.env.VITE_TARGET_PRIVATE_KEY;
+    const account = facade.createAccount(new PrivateKey(rawPrivateKey));
+    const NODE =
+      import.meta.env.VITE_NODE_URL ||
+      "https://sym-test-01.opening-line.jp:3001";
 
+    // ターゲットと作成者アドレスの設定
+    const targetAddress = account.address; // メタデータ記録先アドレス
+    const sourceAddress = account.address; // メタデータ作成者アドレス
+
+    // キーと値の設定
+    const key = metadataGenerateKey(`dummy-id-${Math.random()}`);
     const now = new Date();
     const newTodo: Todo = {
       ...todoCreate,
@@ -35,6 +36,93 @@ export class TodoInfrastructureService implements ITodoService {
       createdAt: now,
       updatedAt: now,
     };
+    let value = new TextEncoder().encode(JSON.stringify(newTodo));
+
+    // 同じキーのメタデータが登録されているか確認
+    const query = new URLSearchParams({
+      targetAddress: targetAddress.toString(),
+      sourceAddress: sourceAddress.toString(),
+      scopedMetadataKey: key.toString(16).toUpperCase(),
+      metadataType: "0",
+    });
+    const metadataInfo = await fetch(
+      new URL("/metadata?" + query.toString(), NODE),
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      },
+    )
+      .then((res) => res.json())
+      .then((json) => {
+        return json.data;
+      });
+    // 登録済の場合は差分データを作成する
+    let sizeDelta = value.length;
+    if (metadataInfo.length > 0) {
+      sizeDelta -= metadataInfo[0].metadataEntry.valueSize;
+      value = metadataUpdateValue(
+        utils.hexToUint8(metadataInfo[0].metadataEntry.value),
+        value,
+      );
+    }
+
+    // アカウントメタデータ登録Tx作成
+    const descriptor = new descriptors.AccountMetadataTransactionV1Descriptor( // Txタイプ:アカウントメタデータ登録Tx
+      targetAddress, // ターゲットアドレス
+      key, // キー
+      sizeDelta, // サイズ差分
+      value, // 値
+    );
+    const tx = facade.createEmbeddedTransactionFromTypedDescriptor(
+      descriptor, // トランザクション Descriptor 設定
+      account.publicKey, // 署名者公開鍵
+    );
+
+    const embeddedTransactions = [tx];
+
+    // アグリゲートTx作成
+    const aggregateDescriptor =
+      new descriptors.AggregateCompleteTransactionV2Descriptor(
+        facade.static.hashEmbeddedTransactions(embeddedTransactions),
+        embeddedTransactions,
+      );
+    const aggregateTx = facade.createTransactionFromTypedDescriptor(
+      aggregateDescriptor, // トランザクション Descriptor 設定
+      account.publicKey, // 署名者公開鍵
+      100, // 手数料乗数
+      60 * 60 * 2, // Deadline:有効期限(秒単位)
+      0, // 連署者数
+    );
+
+    // 署名とアナウンス
+    const sig = account.signTransaction(aggregateTx);
+    const jsonPayload = facade.transactionFactory.static.attachSignature(
+      aggregateTx,
+      sig,
+    );
+    await fetch(new URL("/transactions", NODE), {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: jsonPayload,
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        return json;
+      });
+
+    // const transaction = facade.createTransactionFromTypedDescriptor(
+    //   descriptor,
+    //   account.publicKey,
+    //   100,
+    //   2 * 3600,
+    // );
+    // const signature = account.signTransaction(transaction);
+    // const jsonPayload = facade.transactionFactory.static.attachSignature(
+    //   transaction,
+    //   signature,
+    // );
+    // console.log({ jsonPayload });
+
     const newTodos: Todo[] = [...this.todos, newTodo];
     this.todos = newTodos;
     return new Promise((resolve) => {
