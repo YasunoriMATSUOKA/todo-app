@@ -18,7 +18,7 @@ export class TodoInfrastructureService implements ITodoService {
     const facade = new SymbolFacade(Network.TESTNET);
     const rawPrivateKey = import.meta.env.VITE_TARGET_PRIVATE_KEY;
     const account = facade.createAccount(new PrivateKey(rawPrivateKey));
-    const NODE =
+    const nodeUrl =
       import.meta.env.VITE_NODE_URL ||
       "https://sym-test-01.opening-line.jp:3001";
 
@@ -46,7 +46,7 @@ export class TodoInfrastructureService implements ITodoService {
       metadataType: "0",
     });
     const metadataInfo = await fetch(
-      new URL("/metadata?" + query.toString(), NODE),
+      new URL("/metadata?" + query.toString(), nodeUrl),
       {
         method: "GET",
         headers: { "Content-Type": "application/json" },
@@ -66,19 +66,43 @@ export class TodoInfrastructureService implements ITodoService {
       );
     }
 
-    // アカウントメタデータ登録Tx作成
+    // アカウントメタデータ登録内部Tx作成
     const descriptor = new descriptors.AccountMetadataTransactionV1Descriptor( // Txタイプ:アカウントメタデータ登録Tx
       targetAddress, // ターゲットアドレス
       key, // キー
       sizeDelta, // サイズ差分
       value, // 値
     );
-    const tx = facade.createEmbeddedTransactionFromTypedDescriptor(
-      descriptor, // トランザクション Descriptor 設定
-      account.publicKey, // 署名者公開鍵
+    const accountMetadataInnerTx =
+      facade.createEmbeddedTransactionFromTypedDescriptor(
+        descriptor, // トランザクション Descriptor 設定
+        account.publicKey, // 署名者公開鍵
+      );
+
+    // 転送トランザクションでメッセージ(≒ログ)を登録するための内部Tx作成
+    const messageJson = {
+      key: key.toString(16).toUpperCase(),
+      action: "create",
+      before: undefined,
+      after: newTodo,
+    };
+    const encodedMessage = Uint8Array.from([
+      0, // 平文では先頭に0を追加する慣習
+      ...new TextEncoder().encode(JSON.stringify(messageJson)),
+    ]);
+    const transferInnerTxDescriptor =
+      new descriptors.TransferTransactionV1Descriptor(
+        targetAddress, // 送信先アドレス
+        [], // トークン送信はなし
+        encodedMessage, // メッセージ
+      );
+    const transferInnerTx = facade.createEmbeddedTransactionFromTypedDescriptor(
+      transferInnerTxDescriptor,
+      account.publicKey,
     );
 
-    const embeddedTransactions = [tx];
+    // 一括実行したい内部Txを配列にまとめる
+    const embeddedTransactions = [accountMetadataInnerTx, transferInnerTx];
 
     // アグリゲートTx作成
     const aggregateDescriptor =
@@ -100,7 +124,7 @@ export class TodoInfrastructureService implements ITodoService {
       aggregateTx,
       sig,
     );
-    await fetch(new URL("/transactions", NODE), {
+    await fetch(new URL("/transactions", nodeUrl), {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: jsonPayload,
