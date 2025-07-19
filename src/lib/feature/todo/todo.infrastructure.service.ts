@@ -1,4 +1,6 @@
 import { sortObjectArray } from "@/lib/common/sort";
+import { PrivateKey } from "symbol-sdk";
+import { Network, SymbolFacade, descriptors } from "symbol-sdk/symbol";
 import { ITodoService } from "./todo.service";
 import { Todo, TodoCreate, TodoUpdate } from "./todo.types";
 
@@ -6,6 +8,25 @@ export class TodoInfrastructureService implements ITodoService {
   todos: Todo[] = [];
 
   async create(todoCreate: TodoCreate): Promise<Todo> {
+    // Note: temporally impl to check symbol sdk worked or not
+    const facade = new SymbolFacade(Network.TESTNET);
+    const account = facade.createAccount(PrivateKey.random());
+    const descriptor = new descriptors.TransferTransactionV1Descriptor(
+      account.address,
+    );
+    const transaction = facade.createTransactionFromTypedDescriptor(
+      descriptor,
+      account.publicKey,
+      100,
+      2 * 3600,
+    );
+    const signature = account.signTransaction(transaction);
+    const jsonPayload = facade.transactionFactory.static.attachSignature(
+      transaction,
+      signature,
+    );
+    console.log({ jsonPayload });
+
     const now = new Date();
     const newTodo: Todo = {
       ...todoCreate,
