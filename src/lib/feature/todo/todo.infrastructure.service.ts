@@ -14,7 +14,6 @@ export class TodoInfrastructureService implements ITodoService {
   todos: Todo[] = [];
 
   async create(todoCreate: TodoCreate): Promise<Todo> {
-    // Note: temporally impl to check symbol sdk worked or not
     const facade = new SymbolFacade(Network.TESTNET);
     const rawPrivateKey = import.meta.env.VITE_TARGET_PRIVATE_KEY;
     const account = facade.createAccount(new PrivateKey(rawPrivateKey));
@@ -118,13 +117,16 @@ export class TodoInfrastructureService implements ITodoService {
       0, // 連署者数
     );
 
+    console.log("aggregateTx", aggregateTx);
+
     // 署名とアナウンス
     const sig = account.signTransaction(aggregateTx);
     const jsonPayload = facade.transactionFactory.static.attachSignature(
       aggregateTx,
       sig,
     );
-    await fetch(new URL("/transactions", nodeUrl), {
+    console.log("jsonPayload", jsonPayload);
+    const txAnnounceResponse = await fetch(new URL("/transactions", nodeUrl), {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: jsonPayload,
@@ -133,19 +135,7 @@ export class TodoInfrastructureService implements ITodoService {
       .then((json) => {
         return json;
       });
-
-    // const transaction = facade.createTransactionFromTypedDescriptor(
-    //   descriptor,
-    //   account.publicKey,
-    //   100,
-    //   2 * 3600,
-    // );
-    // const signature = account.signTransaction(transaction);
-    // const jsonPayload = facade.transactionFactory.static.attachSignature(
-    //   transaction,
-    //   signature,
-    // );
-    // console.log({ jsonPayload });
+    console.log("txAnnounceResponse", txAnnounceResponse);
 
     const newTodos: Todo[] = [...this.todos, newTodo];
     this.todos = newTodos;
